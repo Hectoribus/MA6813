@@ -29,7 +29,7 @@
         </inertial>
     </link>
 
-    <!-- Post Link hello -->
+    <!-- Post Link -->
     <link name="post">
         <visual>
             <geometry>
