@@ -1,15 +1,23 @@
 <?xml version="1.0"?>
-<robot name="table_with_post">
+<robot name="robot_arm">
+
+    <link name="world"></link>
+
+    <joint name="table_joint" type="fixed">
+        <parent link="world"/>
+        <child link="table_link"/>
+        <origin xyz="2.0 2.0 0.0"/>
+    </joint>
     
     <!-- Table Link -->
-    <link name="table">
+    <link name="table_link">
         <visual>
             <geometry>
                 <box size="1.0 1.5 1.0"/>
             </geometry>
             <origin xyz="0 0 0.5"/>
-            <material name="Gray">
-                <color rgba="0.5 0.5 0.5 1.0"/>
+            <material name="Grey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
             </material>
         </visual>
 
@@ -29,15 +37,22 @@
         </inertial>
     </link>
 
-    <!-- Post Link -->
-    <link name="post">
+    <!-- Fixed Joint: Attaches Post to Table -->
+    <joint name="table_to_cam_post_joint" type="fixed">
+        <parent link="table_link"/>
+        <child link="cam_post_link"/>
+        <origin xyz="-0.4 0 1.0"/>  <!-- Position at table surface -->
+    </joint>
+
+    <!-- Cam Post Link -->
+    <link name="cam_post_link">
         <visual>
             <geometry>
-                <cylinder radius="0.1" length="1.0"/>
+                <box size="0.04 0.04 1.0"/>
             </geometry>
-            <origin xyz="0 0 1.5"/>
-            <material name="Blue">
-                <color rgba="0.0 0.0 1.0 1.0"/>
+            <origin xyz="0 0 0.5"/>
+            <material name="Grey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
             </material>
         </visual>
 
@@ -45,23 +60,88 @@
             <geometry>
                 <cylinder radius="0.1" length="1.0"/>
             </geometry>
-            <origin xyz="0 0 1.5"/>
+            <origin xyz="0 0 0.5"/>
         </collision>
 
         <inertial>
             <mass value="5.0"/>
-            <origin xyz="0 0 1.5"/>
+            <origin xyz="0 0 0.5"/>
             <inertia ixx="0.5" ixy="0.0" ixz="0.0"
                      iyy="0.5" iyz="0.0"
                      izz="0.5"/>
         </inertial>
     </link>
 
-    <!-- Fixed Joint: Attaches Post to Table -->
-    <joint name="table_to_post" type="fixed">
-        <parent link="table"/>
-        <child link="post"/>
-        <origin xyz="0 0 1.0"/>  <!-- Position at table surface -->
+    <!-- Fixed Joint: Attaches Cam Bar to Cam Post -->
+    <joint name="cam_post_to_cam_bar_joint" type="fixed">
+        <parent link="cam_post_link"/>
+        <child link="cam_bar_link"/>
+        <origin xyz="0.0 0 0.93"/>
     </joint>
+
+    <!-- Cam Bar Link -->
+    <link name="cam_bar_link">
+        <visual>
+            <geometry>
+                <box size="0.4 0.04 0.04"/>
+            </geometry>
+            <origin xyz="0.2 0.0 0.0"/>
+            <material name="Grey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.4 0.04 0.04"/>
+            </geometry>
+            <origin xyz="0.2 0.0 0.0"/>
+        </collision>
+
+        <inertial>
+            <mass value="5.0"/>
+            <origin xyz="0.2 0.0 0.0"/>
+            <inertia ixx="0.5" ixy="0.0" ixz="0.0"
+                     iyy="0.5" iyz="0.0"
+                     izz="0.5"/>
+        </inertial>
+    </link>
+
+    <!-- Fixed Joint: Attaches Cam to Cam Bar -->
+    <joint name="cam_to_cam_bar_joint" type="fixed">
+        <parent link="cam_bar_link"/>
+        <child link="cam_link"/>
+        <origin xyz="0.2 0 0.0"/>
+    </joint>
+
+    <!-- Cam Link -->
+    <link name="cam_link">
+        <visual>
+            <geometry>
+                <mesh filename="meshes/d435.dae"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+            <material name="Grey">
+                <color rgba="0.7 0.7 0.7 1.0"/>
+            </material>
+        </visual>
+
+        <collision>
+            <geometry>
+                <box size="0.04 0.08 0.04"/>
+            </geometry>
+            <origin xyz="0.0 0.0 0.0"/>
+        </collision>
+
+        <inertial>
+            <mass value="5.0"/>
+            <origin xyz="0.0 0.0 0.0"/>
+            <inertia ixx="0.5" ixy="0.0" ixz="0.0"
+                     iyy="0.5" iyz="0.0"
+                     izz="0.5"/>
+        </inertial>
+    </link>
+
+    
 
 </robot>
